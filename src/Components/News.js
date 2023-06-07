@@ -1,8 +1,19 @@
 import React, { Component } from "react";
 import NewsItem from "./NewsItem";
 import Spinner from "./Spinner";
+import PropTypes from "prop-types";
 
 export default class News extends Component {
+  static defaultProps = {
+    country: "us",
+    category: "general",
+  };
+
+  static propTypes = {
+    country: PropTypes.string,
+    category: PropTypes.string,
+  };
+
   constructor() {
     super();
     this.state = {
@@ -14,7 +25,7 @@ export default class News extends Component {
   }
 
   async componentDidMount() {
-    let url = `https://newsapi.org/v2/top-headlines?country=us&category=technology&apiKey=5e8603c7a4d9464a817e8d73e79ad3ce&page=1&pageSize=${this.state.pageSize}`;
+    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=5e8603c7a4d9464a817e8d73e79ad3ce&page=1&pageSize=${this.state.pageSize}`;
     this.setState({
       loading: true,
     });
@@ -29,7 +40,11 @@ export default class News extends Component {
   }
 
   handlePreviousClick = async () => {
-    let url = `https://newsapi.org/v2/top-headlines?country=us&category=technology&apiKey=5e8603c7a4d9464a817e8d73e79ad3ce&page=${
+    let url = `https://newsapi.org/v2/top-headlines?country=${
+      this.props.country
+    }&category=${
+      this.props.category
+    }&apiKey=5e8603c7a4d9464a817e8d73e79ad3ce&page=${
       this.state.page - 1
     }&pageSize=${this.state.pageSize}`;
     this.setState({
@@ -51,7 +66,11 @@ export default class News extends Component {
         Math.ceil(this.state.totalArticles / this.state.pageSize)
       )
     ) {
-      let url = `https://newsapi.org/v2/top-headlines?country=us&category=technology&apiKey=5e8603c7a4d9464a817e8d73e79ad3ce&page=${
+      let url = `https://newsapi.org/v2/top-headlines?country=${
+        this.props.country
+      }&category=${
+        this.props.category
+      }&apiKey=5e8603c7a4d9464a817e8d73e79ad3ce&page=${
         this.state.page + 1
       }&pageSize=${this.state.pageSize}`;
       this.setState({
@@ -68,7 +87,11 @@ export default class News extends Component {
   };
 
   selectedPageSize = async (numberOfArticles) => {
-    let url = `https://newsapi.org/v2/top-headlines?country=us&category=technology&apiKey=5e8603c7a4d9464a817e8d73e79ad3ce&page=1&pageSize=${
+    let url = `https://newsapi.org/v2/top-headlines?country=${
+      this.props.country
+    }&category=${
+      this.props.category
+    }&apiKey=5e8603c7a4d9464a817e8d73e79ad3ce&page=1&pageSize=${
       this.state.pageSize - this.state.pageSize + numberOfArticles
     }`;
     this.setState({
@@ -97,7 +120,7 @@ export default class News extends Component {
             className="dropdown flex flex-col justify-center"
             style={{ alignItems: "center" }}
           >
-            <p className="mb-1 font-semibold">
+            <p className="mb-2 font-semibold">
               Default number of articles per page is 8
             </p>
             <button
