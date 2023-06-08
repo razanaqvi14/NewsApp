@@ -36,7 +36,6 @@ export default class News extends Component {
       totalArticles: data.totalResults,
       loading: false,
     });
-    console.log(this.state.articles);
   }
 
   handlePreviousClick = async () => {
