@@ -24,8 +24,8 @@ export default class News extends Component {
     };
   }
 
-  async componentDidMount() {
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=5e8603c7a4d9464a817e8d73e79ad3ce&page=1&pageSize=${this.state.pageSize}`;
+  updateNews = async () => {
+    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=5e8603c7a4d9464a817e8d73e79ad3ce&page=${this.state.page}&pageSize=${this.state.pageSize}`;
     this.setState({
       loading: true,
     });
@@ -36,57 +36,28 @@ export default class News extends Component {
       totalArticles: data.totalResults,
       loading: false,
     });
+  };
+
+  async componentDidMount() {
+    this.updateNews();
   }
 
   handlePreviousClick = async () => {
-    let url = `https://newsapi.org/v2/top-headlines?country=${
-      this.props.country
-    }&category=${
-      this.props.category
-    }&apiKey=5e8603c7a4d9464a817e8d73e79ad3ce&page=${
-      this.state.page - 1
-    }&pageSize=${this.state.pageSize}`;
-    this.setState({
-      loading: true,
-    });
-    let response = await fetch(url);
-    let data = await response.json();
     this.setState({
       page: this.state.page - 1,
-      articles: data.articles,
-      loading: false,
     });
+    this.updateNews();
   };
 
   handleNextClick = async () => {
-    if (
-      !(
-        this.state.page + 1 >
-        Math.ceil(this.state.totalArticles / this.state.pageSize)
-      )
-    ) {
-      let url = `https://newsapi.org/v2/top-headlines?country=${
-        this.props.country
-      }&category=${
-        this.props.category
-      }&apiKey=5e8603c7a4d9464a817e8d73e79ad3ce&page=${
-        this.state.page + 1
-      }&pageSize=${this.state.pageSize}`;
-      this.setState({
-        loading: true,
-      });
-      let response = await fetch(url);
-      let data = await response.json();
-      this.setState({
-        page: this.state.page + 1,
-        articles: data.articles,
-        loading: false,
-      });
-    }
+    this.setState({
+      page: this.state.page + 1,
+    });
+    this.updateNews();
   };
 
   selectedPageSize = async (numberOfArticles) => {
-    let url = `https://newsapi.org/v2/top-headlines?country=${
+    const url = `https://newsapi.org/v2/top-headlines?country=${
       this.props.country
     }&category=${
       this.props.category
@@ -113,7 +84,7 @@ export default class News extends Component {
           style={{ alignItems: "center" }}
         >
           <h1 className="text-3xl font-semibold bg-slate-900 text-white w-fit p-2.5 rounded-xl">
-            NexusNews - Top headlines
+            NexusNews - Top headlines of category "{this.props.category}"
           </h1>
           <div
             className="dropdown flex flex-col justify-center"
