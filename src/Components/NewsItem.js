@@ -2,9 +2,16 @@ import React, { Component } from "react";
 
 export default class NewsItem extends Component {
   render() {
-    let { title, description, imageURL, newsURL, publishedAt } = this.props;
+    let { title, description, imageURL, newsURL, publishedAt, author, source } =
+      this.props;
     return (
       <div className="card" style={{ width: "18rem", height: "44rem" }}>
+        <span
+          class="position-absolute top-0 translate-middle badge rounded-pill bg-danger"
+          style={{ zIndex: 1, left: "85%" }}
+        >
+          {source}
+        </span>
         <img
           src={
             imageURL === null
@@ -14,15 +21,14 @@ export default class NewsItem extends Component {
           className="card-img-top"
           alt="..."
         />
-        <div
-          className="card-body flex flex-col"
-          style={{ alignItems: "center" }}
-        >
+        <div className="card-body flex flex-col">
           <h5 className="card-title font-semibold text-md">{title}</h5>
           <p className="card-text">{description}</p>
-          <p className="my-2">
-            <strong>Published At: </strong>
-            {publishedAt}
+          <p className="card-text">
+            <small className="text-body-secondary">
+              By {author || "Anonymous"} on{" "}
+              {new Date(publishedAt).toUTCString()}
+            </small>
           </p>
           <a
             style={{ position: "absolute", bottom: "20px", width: "90%" }}
