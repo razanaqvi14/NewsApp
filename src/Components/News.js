@@ -33,13 +33,17 @@ export default class News extends Component {
   };
 
   async componentDidMount() {
+    this.props.setProgress(20);
     const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=5e8603c7a4d9464a817e8d73e79ad3ce&page=${this.state.page}&pageSize=${this.state.pageSize}`;
     let response = await fetch(url);
+    this.props.setProgress(50);
     let data = await response.json();
+    this.props.setProgress(70);
     this.setState({
       articles: data.articles,
       totalResults: data.totalResults,
     });
+    this.props.setProgress(100);
   }
 
   fetchMore = async () => {
@@ -63,13 +67,15 @@ export default class News extends Component {
 
   render() {
     return (
-      <div className="container my-4">
-        <h1 className="text-3xl font-semibold bg-slate-900 text-white w-fit p-2.5 rounded-xl mb-4">
-          NexusNews - Top {this.capitalizeFirstLetter(this.props.category)}{" "}
-          Headlines
-        </h1>
+      <>
+        <div className="container mt-5 flex justify-center">
+          <h1 className="text-3xl w-fit font-semibold bg-slate-900 text-white p-2.5 rounded-xl">
+            NexusNews - Top {this.capitalizeFirstLetter(this.props.category)}{" "}
+            Headlines
+          </h1>
+        </div>
         <InfiniteScroll
-          style={{ padding: "1px 17px" }}
+          style={{ padding: "49px 12px" }}
           dataLength={this.state.articles.length}
           next={this.fetchMore}
           hasMore={this.state.hasMore}
@@ -79,7 +85,7 @@ export default class News extends Component {
             </div>
           }
           endMessage={
-            <h5 className="font-semibold text-center">
+            <h5 className="font-semibold text-center mt-4 mb-2">
               You have reached the end of this page
             </h5>
           }
@@ -108,7 +114,7 @@ export default class News extends Component {
             })}
           </div>
         </InfiniteScroll>
-      </div>
+      </>
     );
   }
 }
