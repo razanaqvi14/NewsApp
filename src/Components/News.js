@@ -34,7 +34,7 @@ export default class News extends Component {
 
   async componentDidMount() {
     this.props.setProgress(20);
-    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=5e8603c7a4d9464a817e8d73e79ad3ce&page=${this.state.page}&pageSize=${this.state.pageSize}`;
+    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.state.pageSize}`;
     let response = await fetch(url);
     this.props.setProgress(50);
     let data = await response.json();
@@ -51,7 +51,7 @@ export default class News extends Component {
       this.setState({
         page: this.state.page + 1,
       });
-      const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=5e8603c7a4d9464a817e8d73e79ad3ce&page=${this.state.page}&pageSize=${this.state.pageSize}`;
+      const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.state.pageSize}`;
       let response = await fetch(url);
       let data = await response.json();
       this.setState({
@@ -80,7 +80,12 @@ export default class News extends Component {
           next={this.fetchMore}
           hasMore={this.state.hasMore}
           loader={
-            <div style={{ display: "flex", justifyContent: "center" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
               <img style={{ width: "40px" }} src={loadingGif} alt="" />
             </div>
           }
